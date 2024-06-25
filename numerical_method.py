@@ -1,5 +1,4 @@
 import numpy as np
-import scipy.integrate as integrate
 
 def contour_integral_trapezoidal(f, z_points):
     n = len(z_points)
@@ -7,17 +6,21 @@ def contour_integral_trapezoidal(f, z_points):
     for k in range(n - 1):
         dz = z_points[k + 1] - z_points[k]
         integral += (f(z_points[k]) + f(z_points[k + 1])) * dz / 2
+    dz = z_points[0] - z_points[-1]
+    integral += (f(z_points[-1]) + f(z_points[0])) * dz / 2
     return integral
 
 def contour_integral_simpson(f, z_points):
     n = len(z_points)
     if n % 2 == 0:
         raise ValueError("Number of points must be odd for Simpson's rule.")
-    
+
     integral = 0.0 + 0.0j
     for k in range(0, n - 2, 2):
         dz = z_points[k + 2] - z_points[k]
         integral += (f(z_points[k]) + 4 * f(z_points[k + 1]) + f(z_points[k + 2])) * dz / 6
+    dz = z_points[0] - z_points[-2]
+    integral += (f(z_points[-2]) + 4 * f(z_points[-1]) + f(z_points[0])) * dz / 6
     return integral
 
 def f(z):
@@ -38,4 +41,3 @@ if num_points % 2 == 0:
 
 integral_simp = contour_integral_simpson(f, z_points)
 print(f"Simpson's rule: {integral_simp}")
-
